@@ -1,0 +1,9 @@
+{
+	"id": "obsidian-mail-importer",
+	"name": "Email Importer",
+	"version": "1.0.0",
+	"minAppVersion": "1.0.0",
+	"description": "Import emails from an IMAP mailbox into your Obsidian vault as Markdown notes with attachments.",
+	"author": "Obsidian Mail Importer",
+	"isDesktopOnly": true
+}
