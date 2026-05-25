@@ -15,6 +15,10 @@ An Obsidian plugin that imports emails from an IMAP mailbox into your vault as M
 
 ## Installation
 
+### Using BRAT Plugin
+
+To make the installation as easy as possible use the BRAT Plugin.
+
 ### Manual Installation
 
 1. Download `main.js`, `manifest.json`, and `styles.css` from the latest release.
