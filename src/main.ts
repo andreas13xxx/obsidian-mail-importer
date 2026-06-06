@@ -24,7 +24,7 @@ export default class EmailImporterPlugin extends Plugin {
 
 		// Initialize services
 		const imapClient = new ImapClient(this.settings);
-		const fileWriter = new FileWriter(this.app.vault, this.settings);
+		const fileWriter = new FileWriter(this.app.vault, this.app, this.settings);
 		this.syncService = new SyncService(
 			imapClient,
 			fileWriter,
@@ -58,7 +58,7 @@ export default class EmailImporterPlugin extends Plugin {
 		// Start scheduler and register timer via this.registerInterval()
 		const timerId = this.scheduler.start(
 			this.settings.intervalMinutes,
-			() => this.triggerSync(),
+			() => { void this.triggerSync(); },
 		);
 		if (timerId !== null) {
 			this.registerInterval(timerId);
@@ -154,7 +154,7 @@ export default class EmailImporterPlugin extends Plugin {
 	restartScheduler(): void {
 		const timerId = this.scheduler.restart(
 			this.settings.intervalMinutes,
-			() => this.triggerSync(),
+			() => { void this.triggerSync(); },
 		);
 		if (timerId !== null) {
 			this.registerInterval(timerId);

@@ -1,8 +1,12 @@
-/*
+.email-importer-test-result {
+	margin-top: 0.5em;
+	padding: 0.25em 0;
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.email-importer-test-success {
+	color: var(--text-success, green);
+}
 
-If your plugin does not need CSS, delete this file.
-
-*/
+.email-importer-test-error {
+	color: var(--text-error, red);
+}

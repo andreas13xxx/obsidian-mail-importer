@@ -39,7 +39,7 @@ export class EmailImporterSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		// T-06.2: Abschnitt „IMAP-Verbindung"
-		containerEl.createEl('h2', { text: 'IMAP-Verbindung' });
+		new Setting(containerEl).setName('IMAP-Verbindung').setHeading();
 
 		new Setting(containerEl)
 			.setName('Host')
@@ -115,20 +115,20 @@ export class EmailImporterSettingTab extends PluginSettingTab {
 			.onClick(async () => {
 				testResultEl.empty();
 				testResultEl.setText('Teste Verbindung…');
-				testResultEl.style.color = '';
+				testResultEl.removeClass('email-importer-test-success', 'email-importer-test-error');
 				try {
 					await this.plugin.testConnection();
 					testResultEl.setText('✓ Verbindung erfolgreich');
-					testResultEl.style.color = 'var(--text-success, green)';
+					testResultEl.addClass('email-importer-test-success');
 				} catch (err) {
 					const message = err instanceof Error ? err.message : String(err);
 					testResultEl.setText(message);
-					testResultEl.style.color = 'var(--text-error, red)';
+					testResultEl.addClass('email-importer-test-error');
 				}
 			}));
 
 		// T-06.4: Abschnitt „Mailbox"
-		containerEl.createEl('h2', { text: 'Mailbox' });
+		new Setting(containerEl).setName('Mailbox').setHeading();
 
 		new Setting(containerEl)
 			.setName('Ordner')
@@ -142,7 +142,7 @@ export class EmailImporterSettingTab extends PluginSettingTab {
 				}));
 
 		// T-06.5: Abschnitt „Import"
-		containerEl.createEl('h2', { text: 'Import' });
+		new Setting(containerEl).setName('Import').setHeading();
 
 		new Setting(containerEl)
 			.setName('Vault-Ordner')

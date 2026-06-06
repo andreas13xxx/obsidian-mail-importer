@@ -1,7 +1,7 @@
 // Phase 5: File-Writer – Vault-Schreiboperationen
 // T-13: Dateinamen-Logik, T-14: Ordner/Dateierstellung, T-15: Markdown-Generierung, T-16: Konsistenz & Cleanup
 
-import { Vault } from 'obsidian';
+import { App, Vault } from 'obsidian';
 import type { EmailImporterSettings } from './settings';
 import type { ParsedMail } from './mail-parser';
 
@@ -277,6 +277,7 @@ function buildAttachmentsSection(
 export class FileWriter {
 	constructor(
 		private vault: Vault,
+		private app: App,
 		private settings: EmailImporterSettings,
 	) {}
 
@@ -372,7 +373,7 @@ export class FileWriter {
 				try {
 					const file = this.vault.getAbstractFileByPath(path);
 					if (file) {
-						await this.vault.delete(file);
+						await this.app.fileManager.trashFile(file);
 					}
 				} catch {
 					// Ignore cleanup errors – best-effort
