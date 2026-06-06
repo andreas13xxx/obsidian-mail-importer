@@ -1,7 +1,7 @@
 {
 	"id": "imap-mail-importer",
 	"name": "E-mail Importer (IMAP)",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"minAppVersion": "1.12.0",
 	"description": "Import emails from an IMAP mailbox into your vault as Markdown notes with attachments.",
 	"author": "andreas13xxx",
