@@ -8,12 +8,14 @@ export default tseslint.config(
 		languageOptions: {
 			globals: {
 				...globals.browser,
+				...globals.node,
 			},
 			parserOptions: {
 				projectService: {
 					allowDefaultProject: [
 						'eslint.config.js',
-						'manifest.json'
+						'manifest.json',
+						'vitest.config.ts',
 					]
 				},
 				tsconfigRootDir: import.meta.dirname,
@@ -22,6 +24,19 @@ export default tseslint.config(
 		},
 	},
 	...obsidianmd.configs.recommended,
+	// Disable sentence-case rule for German UI text
+	{
+		rules: {
+			'obsidianmd/ui/sentence-case': 'off',
+		},
+	},
+	// Disable no-undef for type declaration files
+	{
+		files: ['**/*.d.ts'],
+		rules: {
+			'no-undef': 'off',
+		},
+	},
 	globalIgnores([
 		"node_modules",
 		"dist",

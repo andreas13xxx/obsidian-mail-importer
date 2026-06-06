@@ -60,7 +60,11 @@ function addressToString(address: unknown): string {
 	if (typeof address === 'object' && address !== null && 'text' in address) {
 		return (address as { text: string }).text || '';
 	}
-	return String(address);
+	// Fallback: JSON-serialize unknown objects to avoid [object Object]
+	if (typeof address === 'object') {
+		return JSON.stringify(address);
+	}
+	return String(address as string | number | boolean);
 }
 
 // --- Main Parse Function (T-10.1) ---

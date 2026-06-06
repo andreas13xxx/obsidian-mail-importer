@@ -184,7 +184,7 @@ describe('resolveUniqueFilename – Property Tests', () => {
 						getAbstractFileByPath: (path: string) => {
 							return existingPaths.has(path) ? { path } : null;
 						},
-					} as any;
+					} as unknown as import('obsidian').Vault;
 
 					const result = await resolveUniqueFilename(
 						mockVault,
