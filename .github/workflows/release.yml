@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
+      attestations: write
 
     steps:
       - uses: actions/checkout@v5
@@ -33,3 +35,11 @@ jobs:
             main.js manifest.json styles.css \
             --title "${{ steps.version.outputs.version }}" \
             --generate-notes
+
+      - name: Attest build artifacts
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            main.js
+            manifest.json
+            styles.css
