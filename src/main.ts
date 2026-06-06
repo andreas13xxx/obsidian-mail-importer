@@ -36,20 +36,20 @@ export default class EmailImporterPlugin extends Plugin {
 
 		// T-19.5: Status-Bar-Item erstellen und initialisieren [NF-03]
 		this.statusBarItem = this.addStatusBarItem();
-		this.statusBarItem.setText('Email Importer: bereit');
+		this.statusBarItem.setText('Email Importer: ready');
 
 		// Register settings tab
 		this.addSettingTab(new EmailImporterSettingTab(this.app, this));
 
 		// T-19.3: Ribbon-Icon mit triggerSync() verbinden [F-10]
-		this.addRibbonIcon('mail', 'E-Mails synchronisieren', async () => {
+		this.addRibbonIcon('mail', 'Sync emails', async () => {
 			await this.triggerSync();
 		});
 
 		// T-19.4: Command registrieren [F-11]
 		this.addCommand({
 			id: 'email-importer:sync-now',
-			name: 'E-Mails jetzt synchronisieren',
+			name: 'Sync now',
 			callback: async () => {
 				await this.triggerSync();
 			},
@@ -83,7 +83,7 @@ export default class EmailImporterPlugin extends Plugin {
 
 		// T-20.4: Check required settings [NF-02]
 		if (!this.settings.host || !this.settings.username || !this.settings.password) {
-			new Notice('Email Importer: Bitte IMAP-Einstellungen konfigurieren (Host, Benutzername, Passwort).');
+			new Notice('Email Importer: Please configure IMAP settings (host, username, password).');
 			return;
 		}
 
@@ -92,19 +92,19 @@ export default class EmailImporterPlugin extends Plugin {
 
 		try {
 			// T-20.2: Update status bar during sync [NF-03]
-			this.updateStatusBar('Synchronisiere…');
+			this.updateStatusBar('Syncing…');
 
 			// Execute sync
 			const result: SyncResult = await this.syncService.sync();
 
 			// T-20.3: Show Notice with result [NF-02]
 			if (result.failed === 0 && result.skipped === 0) {
-				new Notice(`Email Importer: ${result.imported} Mails importiert.`);
+				new Notice(`Email Importer: ${result.imported} emails imported.`);
 			} else {
 				const parts: string[] = [];
-				if (result.imported > 0) parts.push(`${result.imported} importiert`);
-				if (result.failed > 0) parts.push(`${result.failed} fehlgeschlagen`);
-				if (result.skipped > 0) parts.push(`${result.skipped} übersprungen`);
+				if (result.imported > 0) parts.push(`${result.imported} imported`);
+				if (result.failed > 0) parts.push(`${result.failed} failed`);
+				if (result.skipped > 0) parts.push(`${result.skipped} skipped`);
 				new Notice(`Email Importer: ${parts.join(', ')}.`);
 			}
 
@@ -112,12 +112,12 @@ export default class EmailImporterPlugin extends Plugin {
 			const now = new Date();
 			const hours = String(now.getHours()).padStart(2, '0');
 			const minutes = String(now.getMinutes()).padStart(2, '0');
-			this.updateStatusBar(`Letzter Sync: ${hours}:${minutes}`);
+			this.updateStatusBar(`Last sync: ${hours}:${minutes}`);
 		} catch (err: unknown) {
 			// Connection or other fatal error
 			const message = err instanceof Error ? err.message : String(err);
-			new Notice(`Email Importer: Fehler – ${message}`);
-			this.updateStatusBar('Sync fehlgeschlagen');
+			new Notice(`Email Importer: Error – ${message}`);
+			this.updateStatusBar('Sync failed');
 		} finally {
 			// T-20.1: Release mutex
 			this.isSyncing = false;
@@ -140,7 +140,7 @@ export default class EmailImporterPlugin extends Plugin {
 	async testConnection(): Promise<void> {
 		// T-20.1: Block testConnection during sync [F-52]
 		if (this.isSyncing) {
-			throw new Error('Sync läuft bereits');
+			throw new Error('Sync already in progress');
 		}
 
 		const client = new ImapClient(this.settings);

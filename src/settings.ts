@@ -39,11 +39,11 @@ export class EmailImporterSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		// T-06.2: Abschnitt „IMAP-Verbindung"
-		new Setting(containerEl).setName('IMAP-Verbindung').setHeading();
+		new Setting(containerEl).setName('IMAP connection').setHeading();
 
 		new Setting(containerEl)
 			.setName('Host')
-			.setDesc('IMAP-Server-Adresse')
+			.setDesc('IMAP server address')
 			.addText(text => text
 				.setPlaceholder('imap.example.com')
 				.setValue(this.plugin.settings.host)
@@ -54,7 +54,7 @@ export class EmailImporterSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Port')
-			.setDesc('IMAP-Port (Standard: 993 für TLS, 143 für STARTTLS)')
+			.setDesc('IMAP port (default: 993 for TLS, 143 for STARTTLS)')
 			.addText(text => text
 				.setPlaceholder('993')
 				.setValue(String(this.plugin.settings.port))
@@ -67,8 +67,8 @@ export class EmailImporterSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
-			.setName('Sicherheit')
-			.setDesc('Verschlüsselungsprotokoll')
+			.setName('Security')
+			.setDesc('Encryption protocol')
 			.addDropdown(dropdown => dropdown
 				.addOption('tls', 'SSL/TLS')
 				.addOption('starttls', 'STARTTLS')
@@ -79,8 +79,8 @@ export class EmailImporterSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
-			.setName('Benutzername')
-			.setDesc('IMAP-Benutzername')
+			.setName('Username')
+			.setDesc('IMAP username')
 			.addText(text => text
 				.setPlaceholder('user@example.com')
 				.setValue(this.plugin.settings.username)
@@ -90,8 +90,8 @@ export class EmailImporterSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
-			.setName('Passwort')
-			.setDesc('IMAP-Passwort (wird im Klartext in data.json gespeichert)')
+			.setName('Password')
+			.setDesc('IMAP password (stored in plaintext in data.json)')
 			.addText(text => {
 				text.inputEl.type = 'password';
 				text
@@ -105,20 +105,20 @@ export class EmailImporterSettingTab extends PluginSettingTab {
 
 		// T-06.3: „Verbindung testen"-Button mit inline Ergebnisanzeige
 		const testConnectionSetting = new Setting(containerEl)
-			.setName('Verbindung testen')
-			.setDesc('Prüft die IMAP-Verbindung mit den aktuellen Einstellungen');
+			.setName('Test connection')
+			.setDesc('Verify the IMAP connection with the current settings');
 
 		const testResultEl = containerEl.createEl('div', { cls: 'email-importer-test-result' });
 
 		testConnectionSetting.addButton(button => button
-			.setButtonText('Verbindung testen')
+			.setButtonText('Test connection')
 			.onClick(async () => {
 				testResultEl.empty();
-				testResultEl.setText('Teste Verbindung…');
+				testResultEl.setText('Testing connection…');
 				testResultEl.removeClass('email-importer-test-success', 'email-importer-test-error');
 				try {
 					await this.plugin.testConnection();
-					testResultEl.setText('✓ Verbindung erfolgreich');
+					testResultEl.setText('✓ Connection successful');
 					testResultEl.addClass('email-importer-test-success');
 				} catch (err) {
 					const message = err instanceof Error ? err.message : String(err);
@@ -131,8 +131,8 @@ export class EmailImporterSettingTab extends PluginSettingTab {
 		new Setting(containerEl).setName('Mailbox').setHeading();
 
 		new Setting(containerEl)
-			.setName('Ordner')
-			.setDesc('IMAP-Mailbox-Ordner')
+			.setName('Folder')
+			.setDesc('IMAP mailbox folder')
 			.addText(text => text
 				.setPlaceholder('INBOX')
 				.setValue(this.plugin.settings.mailbox)
@@ -145,8 +145,8 @@ export class EmailImporterSettingTab extends PluginSettingTab {
 		new Setting(containerEl).setName('Import').setHeading();
 
 		new Setting(containerEl)
-			.setName('Vault-Ordner')
-			.setDesc('Ordner im Vault, in den Mails importiert werden')
+			.setName('Vault folder')
+			.setDesc('Folder in your vault where emails are saved')
 			.addText(text => text
 				.setPlaceholder('Emails')
 				.setValue(this.plugin.settings.importFolder)
@@ -157,8 +157,8 @@ export class EmailImporterSettingTab extends PluginSettingTab {
 
 		// T-06.7: Intervall-Änderung ruft restartScheduler() auf
 		new Setting(containerEl)
-			.setName('Intervall')
-			.setDesc('Automatisches Sync-Intervall in Minuten (0 = nur manuell)')
+			.setName('Interval')
+			.setDesc('Auto-sync interval in minutes (0 = manual only)')
 			.addText(text => text
 				.setPlaceholder('0')
 				.setValue(String(this.plugin.settings.intervalMinutes))
@@ -172,10 +172,10 @@ export class EmailImporterSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
-			.setName('Jetzt synchronisieren')
-			.setDesc('Startet sofort einen Sync-Vorgang')
+			.setName('Sync now')
+			.setDesc('Start an immediate sync')
 			.addButton(button => button
-				.setButtonText('Jetzt synchronisieren')
+				.setButtonText('Sync now')
 				.onClick(async () => {
 					await this.plugin.triggerSync();
 				}));
